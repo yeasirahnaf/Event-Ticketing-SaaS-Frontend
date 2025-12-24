@@ -22,19 +22,32 @@ This document outlines the frontend architecture, user flows, and component stru
 
 ---
 
-## 1. Domain & Routing Strategy (Multi-Subdomain SaaS)
-To provide a premium white-label experience and clear isolation between marketing and operations, TicketBD will use a subdomain-based routing strategy.
+## 1. Domain & Routing Strategy (Triple-Entry System)
+TicketBD follows a multi-entry architecture to isolate administrative burdens and provide a white-label experience for local organizers.
 
-| Domain | Role | Internal View Folder |
-| --- | --- | --- |
-| `ticketbd.com` | Marketing Landing Page | `app/(marketing)/*` |
-| `admin.ticketbd.com`| Platform & Tenant Admin Portal | `app/(admin)/*` |
-| `*.ticketbd.com` | Tenant Public Storefronts | `app/(tenant)/*` |
+| Domain | Audience | Role(s) | Internal View Folder |
+| --- | --- | --- | --- |
+| `ticketbd.com` | Public / Organizers | **Tenant Admin** | `app/(marketing)/*` |
+| `admin.ticketbd.com` | Platform Owner | **Platform Admin** | `app/admin/*` |
+| `*.ticketbd.com` | Attendees / Staff | **Staff**, **Attendee** | `app/(tenant)/[slug]/*` |
+
+### Entry Point Logic
+1. **Central HUB (`ticketbd.com`)**: 
+   - Public marketing and sales.
+   - **Centralized Signup/Login for Tenant Admins**.
+   - After login, Tenant Admins manage their subscription and launch their instance.
+2. **Platform Admin (`admin.ticketbd.com`)**: 
+   - Isolated environment for global platform control.
+3. **Tenant Instances (`[slug].ticketbd.com`)**: 
+   - Individualized storefront for each organizer.
+   - **Local Login for Attendees and Staff**.
+   - Staff use this site for check-ins; Attendees use it to buy/view tickets.
 
 ### Implementation with Next.js Middleware
-We will use **Next.js Middleware** to intercept requests and rewrite them based on the `host` header.
+Middleware handles host-based rewrites:
 - `GET admin.ticketbd.com/dashboard` → Rewrite to `/admin/dashboard`
-- `GET concert-bd.ticketbd.com/` → Rewrite to `/tenant/concert-bd/`
+- `GET organizer1.ticketbd.com/events` → Rewrite to `/(tenant)/organizer1/events`
+- `GET ticketbd.com/login` → Standard routing to `(marketing)/login` (Tenant Admin entry)
 
 ---
 
@@ -67,29 +80,31 @@ We will use **Next.js Middleware** to intercept requests and rewrite them based 
 ---
 
 ## 3. Tenant Admin Module
-*Routes: `/tenant-admin/*`*
+*Entry Point: `ticketbd.com` (Main Hub)*
 
 | Route | View | Features |
 | --- | --- | --- |
-| `/tenant-admin` | Dashboard | Sales overview, event list, ticket breakdown. |
-| `/tenant-admin/events` | Events List | Manage events, search, and status updates. |
-| `/tenant-admin/events/new` | Create Event | Form for event details, location, and dates. |
-| `/tenant-admin/tickets` | Ticket Types | Define GA, VIP tiers per event. |
-| `/tenant-admin/orders` | Order List | View sales, search by email/ID, refund management. |
-| `/tenant-admin/discounts`| Promos | Create and track usage of discount codes. |
-| `/tenant-admin/staff` | Staff Mgmt | Invite and assign staff to specific events. |
-| `/tenant-admin/settings`| Branding | Profile customization, logo upload. |
+| `/login` | Admin Auth | Login for Tenant Admins. |
+| `/register` | Signup | Self-service registration & selection of subdomain. |
+| `/dashboard` | Mgmt Center | Sales overview, instances list, subscription status. |
+| `/events` | Events List | Manage all events across their tenant identity. |
+| `/tickets` | Ticket Types | Define pricing tiers (GA, VIP). |
+| `/settings` | Branding | logo, colors, and subdomain management. |
 
 ---
 
-## 4. Staff Module
-*Routes: `/staff/*`*
+## 4. Tenant Event Site (Public + Operations)
+*Entry Point: `[slug].ticketbd.com`*
 
 | Route | View | Features |
 | --- | --- | --- |
-| `/staff` | Assignment | List of events the staff is currently working on. |
-| `/staff/scanner` | QR Scanner | Mobile-optimized camera view for check-ins. |
-| `/staff/lookup` | Attendee Search| Search by name/phone if QR fails. |
+| `/` | Storefront | List of public events for the specific tenant. |
+| `/login` | Local Auth | **Login for Attendees and Staff**. |
+| `/staff` | Staff Portal | Mobile-optimized QR scanner and check-in list. |
+| `/staff/lookup` | Manual Entry | Attendee lookup by name/email. |
+| `/e/[slug]` | Event Page | Detail view and ticket selection. |
+| `/checkout` | Payment | BDT payment (bKash, Nagad, etc.). |
+| `/my-tickets` | Attendee Dash | View history and download QR code passes. |
 
 ---
 
@@ -107,11 +122,11 @@ We will use **Next.js Middleware** to intercept requests and rewrite them based 
 ---
 
 ## 6. Implementation Strategy
-1. **Milestone 1:** Auth & Layout System (Shared).
-2. **Milestone 2:** Platform Admin (User/Tenant CRUD).
-3. **Milestone 3:** Tenant Admin (Event/Ticket Management).
-4. **Milestone 4:** Checkout Flow & Local Payment Integration.
-5. **Milestone 5:** Staff Check-In Mobile UI.
+1. **Milestone 1:** Domain Middleware & Multitenancy Setup.
+2. **Milestone 2:** Centralized Hub (Tenant Admin Auth & Billing).
+3. **Milestone 3:** Platform Admin Isolation.
+4. **Milestone 4:** Tenant Event Storefronts (Attendee/Staff login).
+5. **Milestone 5:** Local Payment & QR System.
 
 ---
 
