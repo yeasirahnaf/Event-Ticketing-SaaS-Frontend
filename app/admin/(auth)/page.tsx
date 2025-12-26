@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Ticket, Mail, Lock, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { loginAdmin } from '../actions/auth-actions';
+import { authService } from '@/services/authService';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
@@ -15,16 +15,17 @@ export default function AdminLoginPage() {
         setStatus({ type: 'loading', message: 'Authenticating...' });
         setFieldErrors({});
 
-        const result = await loginAdmin(formData);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
-        if (result.success) {
-            setStatus({ type: 'success', message: result.message });
+        try {
+            await authService.login(email, password);
+            setStatus({ type: 'success', message: 'Login successful' });
             setTimeout(() => router.push('/admin/dashboard'), 1000);
-        } else {
-            setStatus({ type: 'error', message: result.message });
-            if (result.errors) {
-                setFieldErrors(result.errors);
-            }
+        } catch (error: any) {
+            console.error("Login failed", error);
+            const errorMessage = error.response?.data?.message || 'Invalid email or password';
+            setStatus({ type: 'error', message: Array.isArray(errorMessage) ? errorMessage[0] : errorMessage });
         }
     }
 
@@ -50,8 +51,8 @@ export default function AdminLoginPage() {
 
                 {status.type !== 'idle' && (
                     <div className={`mb-6 p-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${status.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
-                            status.type === 'loading' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
-                                'bg-red-50 text-red-700 border border-red-100'
+                        status.type === 'loading' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
+                            'bg-red-50 text-red-700 border border-red-100'
                         }`}>
                         {status.type === 'success' && <CheckCircle2 size={20} className="shrink-0" />}
                         {status.type === 'error' && <AlertCircle size={20} className="shrink-0" />}

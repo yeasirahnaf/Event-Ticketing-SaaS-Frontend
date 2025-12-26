@@ -1,49 +1,80 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import SectionHeader from '@/components/admin/SectionHeader';
 import StatsGrid from '@/components/admin/StatsGrid';
 import AdminCard from '@/components/admin/AdminCard';
 import { Ticket, TrendingUp, DollarSign, Download, Filter, Search } from 'lucide-react';
-import fs from 'fs/promises';
-import path from 'path';
+import { adminService } from '@/services/adminService';
 
-async function getSales() {
-    const filePath = path.join(process.cwd(), 'data', 'sales.json');
-    try {
-        const fileData = await fs.readFile(filePath, 'utf-8');
-        return JSON.parse(fileData);
-    } catch (e) {
-        return [];
-    }
+interface Payment {
+    id: string;
+    amountCents: number;
+    currency: string;
+    status: string;
+    provider: string;
+    createdAt: string;
+    orderId?: string;
+    payload?: any;
+    // ... other fields
 }
 
-export default async function SalesPage() {
-    const sales = await getSales();
+export default function SalesPage() {
+    const [payments, setPayments] = useState<Payment[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try {
+                const response = await adminService.getAllPayments();
+                setPayments(response.data || []);
+            } catch (error) {
+                console.error("Failed to fetch payments", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPayments();
+    }, []);
+
+    // Calculate stats
+    const totalRevenueCents = payments.reduce((acc, curr) =>
+        acc + (curr.status === 'succeeded' ? Number(curr.amountCents) : 0), 0);
+    const totalTransactions = payments.length;
+    const avgOrderValueCents = totalTransactions > 0 ? totalRevenueCents / totalTransactions : 0;
+    const pendingPayoutsCents = payments.reduce((acc, curr) =>
+        acc + (curr.status === 'pending' ? Number(curr.amountCents) : 0), 0);
 
     const stats = [
         {
             label: 'Global Revenue',
-            value: `৳${sales.reduce((acc: number, curr: any) => acc + (curr.status === 'completed' ? curr.amount : 0), 0).toLocaleString()}`,
+            value: `৳${(totalRevenueCents / 100).toLocaleString()}`,
             icon: <DollarSign size={20} />
         },
         {
             label: 'Total Transactions',
-            value: sales.length,
+            value: totalTransactions,
             icon: <Ticket size={20} />
         },
         {
             label: 'Avg. Order Value',
-            value: sales.length > 0 ? `৳${Math.round(sales.reduce((acc: number, curr: any) => acc + curr.amount, 0) / sales.length).toLocaleString()}` : '৳0',
+            value: `৳${(avgOrderValueCents / 100).toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
             icon: <TrendingUp size={20} />
         },
         {
             label: 'Pending Payouts',
-            value: `৳${sales.reduce((acc: number, curr: any) => acc + (curr.status === 'pending' ? curr.amount : 0), 0).toLocaleString()}`,
+            value: `৳${(pendingPayoutsCents / 100).toLocaleString()}`,
             icon: <Download size={20} />
         },
     ];
 
+    if (loading) {
+        return <div className="p-12 text-center text-slate-400">Loading sales data...</div>;
+    }
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <SectionHeader
                 title="Ticket Sales Ledger"
                 description="Global transaction monitoring and financial audit."
@@ -52,7 +83,7 @@ export default async function SalesPage() {
                 actionIcon={<Download size={20} />}
             />
 
-            <StatsGrid stats={stats as any} />
+            <StatsGrid stats={stats} />
 
             <AdminCard title="Recent Transactions" icon={<TrendingUp size={18} />}>
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -75,35 +106,41 @@ export default async function SalesPage() {
                         <thead>
                             <tr className="border-b border-slate-50">
                                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">TXN ID</th>
-                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Tenant</th>
-                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Customer</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Provider</th>
+                                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Order ID</th>
                                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Amount</th>
                                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Status</th>
                                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-center">Date</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-50">
-                            {sales.map((sale: any) => (
-                                <tr key={sale.id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="px-6 py-4 text-sm font-bold text-slate-900 text-center">{sale.id}</td>
-                                    <td className="px-6 py-4 text-sm font-medium text-slate-600 text-center">{sale.tenantName}</td>
-                                    <td className="px-6 py-4 text-sm font-medium text-slate-600 text-center">{sale.customer}</td>
-                                    <td className="px-6 py-4 text-sm font-black text-slate-950 italic text-center">৳{sale.amount.toLocaleString()}</td>
-                                    <td className="px-6 py-4 text-center">
-                                        <span className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${sale.status === 'completed'
+                        <tbody className="divide-y divide-slate-5">
+                            {payments.length > 0 ? (
+                                payments.map((payment) => (
+                                    <tr key={payment.id} className="hover:bg-slate-50/50 transition-colors">
+                                        <td className="px-6 py-4 text-sm font-bold text-slate-900 text-center">{payment.id.substring(0, 8)}...</td>
+                                        <td className="px-6 py-4 text-sm font-medium text-slate-600 text-center uppercase">{payment.provider}</td>
+                                        <td className="px-6 py-4 text-sm font-medium text-slate-600 text-center">{payment.orderId || '-'}</td>
+                                        <td className="px-6 py-4 text-sm font-black text-slate-950 italic text-center">৳{(Number(payment.amountCents) / 100).toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-center">
+                                            <span className={`px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${payment.status === 'succeeded'
                                                 ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
-                                                : sale.status === 'pending'
+                                                : payment.status === 'pending'
                                                     ? 'bg-amber-50 text-amber-700 border-amber-100'
                                                     : 'bg-red-50 text-red-700 border-red-100'
-                                            }`}>
-                                            {sale.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-slate-500 font-medium text-center">
-                                        {new Date(sale.date).toLocaleDateString('en-GB')}
-                                    </td>
+                                                }`}>
+                                                {payment.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-slate-500 font-medium text-center">
+                                            {new Date(payment.createdAt).toLocaleDateString('en-GB')}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-8 text-center text-slate-400 italic">No transactions found.</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

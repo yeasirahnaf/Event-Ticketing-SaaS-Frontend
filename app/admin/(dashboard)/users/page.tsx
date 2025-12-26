@@ -1,19 +1,36 @@
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import SectionHeader from '@/components/admin/SectionHeader';
-import { Users, Shield, ShieldCheck, Mail, Clock, Plus } from 'lucide-react';
-import fs from 'fs/promises';
-import path from 'path';
+import { Users, ShieldCheck, Mail, Clock, Plus } from 'lucide-react';
+import { adminService } from '@/services/adminService';
 
-async function getAdmins() {
-    const filePath = path.join(process.cwd(), 'data', 'admins.json');
-    const fileData = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(fileData);
-}
+export default function UsersPage() {
+    const [admins, setAdmins] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-export default async function UsersPage() {
-    const admins = await getAdmins();
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await adminService.getAllUsers();
+                // API response structure: { data: [...], meta: ... }
+                setAdmins(response.data || []);
+            } catch (error) {
+                console.error("Failed to fetch users", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
+    if (loading) {
+        return <div className="p-8 text-center text-slate-500">Loading users...</div>;
+    }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <SectionHeader
                 title="Platform Users"
                 description="Super admins and platform control users."
@@ -31,14 +48,14 @@ export default async function UsersPage() {
 
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-black text-xl italic shadow-sm">
-                                {(admin.fullName || admin.firstName || 'A').charAt(0)}
+                                {(admin.fullName || admin.email || 'A').charAt(0).toUpperCase()}
                             </div>
                             <div>
                                 <h3 className="font-bold text-slate-950 text-lg leading-tight">
-                                    {admin.fullName || `${admin.firstName || ''} ${admin.lastName || ''}`.trim() || 'Administrator'}
+                                    {admin.fullName || admin.email}
                                 </h3>
                                 <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">
-                                    {admin.designation || 'Platform Staff'}
+                                    {admin.isPlatformAdmin ? 'Platform Admin' : 'User'}
                                 </p>
                             </div>
                         </div>
@@ -56,7 +73,7 @@ export default async function UsersPage() {
 
                         <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
                             <span className="px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-black uppercase tracking-widest border border-indigo-100">
-                                Platinum Admin
+                                {admin.isPlatformAdmin ? 'Super Admin' : 'Standard'}
                             </span>
                             <button className="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors">
                                 Revoke Access

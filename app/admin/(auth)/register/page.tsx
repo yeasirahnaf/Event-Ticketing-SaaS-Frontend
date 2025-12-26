@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Ticket, Mail, Lock, User, Building2, ArrowRight, ArrowLeft, Key, CheckCircle2, AlertCircle, Phone, Briefcase } from 'lucide-react';
-import { registerAdmin } from '../../actions/auth-actions';
+import { authService } from '@/services/authService'; // Placeholder or remove
 import { useRouter } from 'next/navigation';
 
 export default function AdminRegisterPage() {
@@ -15,16 +15,22 @@ export default function AdminRegisterPage() {
         setStatus({ type: 'loading', message: 'Creating account...' });
         setFieldErrors({});
 
-        const result = await registerAdmin(formData);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+        const fullName = formData.get('full_name') as string;
 
-        if (result.success) {
-            setStatus({ type: 'success', message: result.message });
+        try {
+            await authService.register({
+                email,
+                password,
+                fullName
+            });
+            setStatus({ type: 'success', message: 'Account created! Redirecting to login...' });
             setTimeout(() => router.push('/admin'), 2000);
-        } else {
-            setStatus({ type: 'error', message: result.message });
-            if (result.errors) {
-                setFieldErrors(result.errors);
-            }
+        } catch (error: any) {
+            console.error("Registration failed", error);
+            const msg = error.response?.data?.message || 'Registration failed';
+            setStatus({ type: 'error', message: Array.isArray(msg) ? msg[0] : msg });
         }
     }
 
@@ -89,76 +95,27 @@ export default function AdminRegisterPage() {
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor="email" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                                Admin Email
-                            </label>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
-                                    <Mail size={18} />
-                                </div>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    placeholder="admin@ticketbd.com"
-                                    className={`block w-full pl-11 pr-4 py-3 bg-slate-50 rounded-2xl text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${fieldErrors.email ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
-                                />
-                            </div>
-                            {fieldErrors.email && (
-                                <p className="mt-1.5 text-xs font-semibold text-red-500 uppercase tracking-tight italic">
-                                    {fieldErrors.email[0]}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <label htmlFor="phone_number" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                                Phone Number
-                            </label>
-                            <div className="relative group">
-                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
-                                    <Phone size={18} />
-                                </div>
-                                <input
-                                    id="phone_number"
-                                    name="phone_number"
-                                    type="tel"
-                                    required
-                                    placeholder="+880 1XXX-XXXXXX"
-                                    className={`block w-full pl-11 pr-4 py-3 bg-slate-50 rounded-2xl text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${fieldErrors.phone_number ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
-                                />
-                            </div>
-                            {fieldErrors.phone_number && (
-                                <p className="mt-1.5 text-xs font-semibold text-red-500 uppercase tracking-tight italic">
-                                    {fieldErrors.phone_number[0]}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
                     <div>
-                        <label htmlFor="designation" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                            Designation / Role
+                        <label htmlFor="email" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                            Admin Email
                         </label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
-                                <Briefcase size={18} />
+                                <Mail size={18} />
                             </div>
                             <input
-                                id="designation"
-                                name="designation"
-                                type="text"
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
                                 required
-                                placeholder="e.g. Platform Administrator, Support Lead"
-                                className={`block w-full pl-11 pr-4 py-3 bg-slate-50 rounded-2xl text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${fieldErrors.designation ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
+                                placeholder="admin@ticketbd.com"
+                                className={`block w-full pl-11 pr-4 py-3 bg-slate-50 rounded-2xl text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${fieldErrors.email ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
                             />
                         </div>
-                        {fieldErrors.designation && (
+                        {fieldErrors.email && (
                             <p className="mt-1.5 text-xs font-semibold text-red-500 uppercase tracking-tight italic">
-                                {fieldErrors.designation[0]}
+                                {fieldErrors.email[0]}
                             </p>
                         )}
                     </div>
@@ -183,30 +140,6 @@ export default function AdminRegisterPage() {
                         {fieldErrors.password && (
                             <p className="mt-1.5 text-xs font-semibold text-red-500 uppercase tracking-tight italic">
                                 {fieldErrors.password[0]}
-                            </p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label htmlFor="registration_token" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                            Registration Token
-                        </label>
-                        <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
-                                <Key size={18} />
-                            </div>
-                            <input
-                                id="registration_token"
-                                name="registration_token"
-                                type="text"
-                                required
-                                placeholder="Enter token from platform admin"
-                                className={`block w-full pl-11 pr-4 py-3 bg-slate-50 rounded-2xl text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all ${fieldErrors.registration_token ? 'border-red-500 bg-red-50' : 'border-slate-200'}`}
-                            />
-                        </div>
-                        {fieldErrors.registration_token && (
-                            <p className="mt-1.5 text-xs font-semibold text-red-500 uppercase tracking-tight italic">
-                                {fieldErrors.registration_token[0]}
                             </p>
                         )}
                     </div>

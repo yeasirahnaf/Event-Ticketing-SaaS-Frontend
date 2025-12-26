@@ -16,7 +16,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 
-import { logoutAdmin } from '../actions/auth-actions';
+import { authService } from '@/services/authService';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLayout({
@@ -28,10 +28,8 @@ export default function AdminLayout({
     const router = useRouter();
 
     async function handleLogout() {
-        const result = await logoutAdmin();
-        if (result.success) {
-            router.push('/admin');
-        }
+        await authService.logout();
+        router.push('/admin');
     }
 
     const navItems = [

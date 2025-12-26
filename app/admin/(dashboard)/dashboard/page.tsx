@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import {
     Building2,
     Users,
@@ -8,8 +10,47 @@ import {
     ArrowDownRight,
     Ticket
 } from 'lucide-react';
+import { adminService, ActivityLog } from '@/services/adminService';
 
 export default function AdminPage() {
+    const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
+    const [stats, setStats] = useState<any>(null);
+    const [tenants, setTenants] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [logsResponse, statsData, tenantsResponse] = await Promise.all([
+                    adminService.getAllActivityLogs(),
+                    adminService.getDashboardStats(),
+                    adminService.getAllTenants({ limit: 5 })
+                ]);
+
+                // Logs
+                const logs = logsResponse.data || [];
+                setActivityLogs(logs.slice(0, 5));
+
+                // Stats
+                setStats(statsData);
+
+                // Tenants
+                setTenants(tenantsResponse.data || []);
+
+            } catch (error) {
+                console.error("Failed to fetch dashboard data", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT' }).format(amount);
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Page Header */}
@@ -22,28 +63,28 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
                     title="Active Tenants"
-                    value="124"
-                    trend="+12%"
+                    value={loading ? "..." : stats?.activeTenants || 0}
+                    trend="Live"
                     isUp={true}
                     icon={<Building2 className="text-primary" size={20} />}
                 />
                 <StatCard
-                    title="Total Attendees"
-                    value="15.2k"
-                    trend="+8%"
+                    title="Total Users"
+                    value={loading ? "..." : stats?.totalUsers || 0}
+                    trend="Registered"
                     isUp={true}
                     icon={<Users className="text-blue-500" size={20} />}
                 />
                 <StatCard
                     title="Net Revenue"
-                    value="৳ 4.2M"
-                    trend="+18.5%"
+                    value={loading ? "..." : formatCurrency(stats?.totalRevenue || 0)}
+                    trend="Total"
                     isUp={true}
                     icon={<TrendingUp className="text-emerald-500" size={20} />}
                 />
                 <StatCard
                     title="System Health"
-                    value="99.9%"
+                    value={loading ? "..." : stats?.systemHealth || "Good"}
                     trend="Stable"
                     isUp={true}
                     icon={<AlertCircle className="text-amber-500" size={20} />}
@@ -68,15 +109,26 @@ export default function AdminPage() {
                                 <tr className="border-b border-slate-100 italic text-slate-400 font-medium">
                                     <th className="text-left pb-4">Tenant Name</th>
                                     <th className="text-left pb-4">Onboarded</th>
-                                    <th className="text-left pb-4">Events</th>
+                                    <th className="text-left pb-4">Slug</th>
                                     <th className="text-left pb-4 text-right">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                <TenantRow name="Dhaka Tech Summit" date="2 hours ago" events="12" status="Active" />
-                                <TenantRow name="Nishorgo Concerts" date="5 hours ago" events="4" status="Active" />
-                                <TenantRow name="Bangladesh Film Festival" date="Yesterday" events="1" status="Pending" />
-                                <TenantRow name="Chittagong Expo" date="Dec 20, 2025" events="0" status="Suspended" />
+                            <tbody className="divide-y divide-slate-5">
+                                {loading ? (
+                                    <tr><td colSpan={4} className="py-4 text-center text-slate-400">Loading tenants...</td></tr>
+                                ) : tenants.length > 0 ? (
+                                    tenants.map((tenant: any) => (
+                                        <TenantRow
+                                            key={tenant.id}
+                                            name={tenant.name}
+                                            date={new Date(tenant.createdAt).toLocaleDateString()}
+                                            slug={tenant.slug}
+                                            status={tenant.status}
+                                        />
+                                    ))
+                                ) : (
+                                    <tr><td colSpan={4} className="py-4 text-center text-slate-400">No tenants found.</td></tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -90,10 +142,19 @@ export default function AdminPage() {
 
                     <h3 className="text-lg font-bold mb-6 italic">System Activity</h3>
                     <div className="space-y-6">
-                        <ActivityItem text="Nishorgo Concerts updated their logo." time="10m ago" />
-                        <ActivityItem text="New user registered from Sylhet." time="24m ago" />
-                        <ActivityItem text="Payout of ৳ 50,000 processed." time="1h ago" />
-                        <ActivityItem text="Critical server patch applied successfully." time="3h ago" />
+                        {loading ? (
+                            <p className="text-slate-400 text-sm">Loading activity...</p>
+                        ) : activityLogs.length > 0 ? (
+                            activityLogs.map((log) => (
+                                <ActivityItem
+                                    key={log.id}
+                                    text={log.action}
+                                    time={new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                />
+                            ))
+                        ) : (
+                            <p className="text-slate-400 text-sm">No recent activity.</p>
+                        )}
                     </div>
 
                     <button className="mt-8 w-full py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-sm font-bold transition-all">
@@ -122,9 +183,12 @@ function StatCard({ title, value, trend, isUp, icon }: any) {
     );
 }
 
-function TenantRow({ name, date, events, status }: any) {
+function TenantRow({ name, date, slug, status }: any) {
     const statusColors: any = {
-        Active: 'bg-emerald-100 text-emerald-700',
+        active: 'bg-emerald-100 text-emerald-700',
+        pending: 'bg-amber-100 text-amber-700',
+        suspended: 'bg-red-100 text-red-700',
+        Active: 'bg-emerald-100 text-emerald-700', // support both cases just in case
         Pending: 'bg-amber-100 text-amber-700',
         Suspended: 'bg-red-100 text-red-700'
     };
@@ -133,9 +197,9 @@ function TenantRow({ name, date, events, status }: any) {
         <tr className="group hover:bg-slate-50 transition-colors">
             <td className="py-4 font-bold text-slate-900">{name}</td>
             <td className="py-4 text-slate-500">{date}</td>
-            <td className="py-4 text-slate-500">{events}</td>
+            <td className="py-4 text-slate-500 italic">@{slug}</td>
             <td className="py-4 text-right">
-                <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${statusColors[status]}`}>
+                <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${statusColors[status] || 'bg-gray-100'}`}>
                     {status}
                 </span>
             </td>
