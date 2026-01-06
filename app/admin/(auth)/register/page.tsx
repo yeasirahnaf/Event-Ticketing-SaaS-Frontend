@@ -26,7 +26,7 @@ export default function AdminRegisterPage() {
                 fullName
             });
             setStatus({ type: 'success', message: 'Account created! Redirecting to login...' });
-            setTimeout(() => router.push('/admin'), 2000);
+            setTimeout(() => router.push('/admin/login'), 2000);
         } catch (error: any) {
             console.error("Registration failed", error);
             const msg = error.response?.data?.message || 'Registration failed';
@@ -50,7 +50,7 @@ export default function AdminRegisterPage() {
 
             <div className="bg-white py-10 px-6 shadow-xl shadow-slate-200/50 sm:rounded-3xl sm:px-12 border border-slate-100 max-w-lg mx-auto">
                 <div className="mb-8">
-                    <Link href="/admin" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors mb-4">
+                    <Link href="/admin/login" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors mb-4">
                         <ArrowLeft size={14} />
                         Back to Login
                     </Link>

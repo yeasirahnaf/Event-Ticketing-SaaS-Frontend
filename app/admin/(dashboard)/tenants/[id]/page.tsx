@@ -12,19 +12,18 @@ import {
     Mail,
     Phone
 } from 'lucide-react';
-import fs from 'fs/promises';
-import path from 'path';
-
-async function getTenant(id: string) {
-    const filePath = path.join(process.cwd(), 'data', 'tenants.json');
-    const fileData = await fs.readFile(filePath, 'utf-8');
-    const tenants = JSON.parse(fileData);
-    return tenants.find((t: any) => t.id === id);
-}
+import { adminService, Tenant } from '@/services/adminService';
 
 export default async function TenantDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const tenant = await getTenant(id);
+
+    let tenant = null;
+    try {
+        const response = await adminService.getTenantById(id);
+        tenant = response.data || response; // Handle if response is wrapped or direct
+    } catch (error) {
+        console.error("Failed to fetch tenant", error);
+    }
 
     if (!tenant) {
         return (
@@ -36,6 +35,9 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
             </div>
         );
     }
+
+    // Safely handle branding properties with defaults
+    const branding = tenant.brandingSettings || { primaryColor: '#059669', logo: '/placeholder-logo.png' };
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -61,15 +63,19 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
             <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm shadow-slate-200/50 p-8 sm:p-10 relative overflow-hidden">
                 <div
                     className="absolute top-0 right-0 w-64 h-64 opacity-5 -mr-20 -mt-20 rounded-full"
-                    style={{ backgroundColor: tenant.branding.primaryColor }}
+                    style={{ backgroundColor: branding.primaryColor }}
                 ></div>
 
                 <div className="relative flex flex-col md:flex-row gap-8 items-start">
                     <div
                         className="w-24 h-24 sm:w-32 sm:h-32 rounded-[2rem] flex items-center justify-center shadow-xl shadow-slate-200 border-4 border-white"
-                        style={{ backgroundColor: tenant.branding.primaryColor }}
+                        style={{ backgroundColor: branding.primaryColor }}
                     >
-                        <img src={tenant.branding.logo} alt={tenant.name} className="w-16 h-16 sm:w-20 sm:h-20" />
+                        {branding.logo ? (
+                            <img src={branding.logo} alt={tenant.name} className="w-16 h-16 sm:w-20 sm:h-20" />
+                        ) : (
+                            <Shield className="text-white w-10 h-10" />
+                        )}
                     </div>
 
                     <div className="flex-1 space-y-4">
@@ -153,13 +159,13 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
                         <div className="flex items-center gap-4">
                             <div
                                 className="w-16 h-16 rounded-2xl shadow-inner border border-slate-100 flex items-center justify-center"
-                                style={{ backgroundColor: tenant.branding.primaryColor }}
+                                style={{ backgroundColor: branding.primaryColor }}
                             >
                                 <div className="w-4 h-4 rounded-full bg-white/20"></div>
                             </div>
                             <div>
                                 <p className="text-sm font-bold text-slate-900">Primary Color</p>
-                                <p className="text-xs text-slate-500 font-medium font-mono uppercase">{tenant.branding.primaryColor}</p>
+                                <p className="text-xs text-slate-500 font-medium font-mono uppercase">{branding.primaryColor}</p>
                             </div>
                         </div>
                         <div className="p-4 rounded-2xl border-2 border-dashed border-slate-100 flex items-center justify-center text-slate-400 text-sm font-medium">
@@ -170,15 +176,4 @@ export default async function TenantDetailPage({ params }: { params: Promise<{ i
             </div>
         </div>
     );
-}
-
-// Generate static params for the dynamic route (optional but good for performance)
-export async function generateStaticParams() {
-    const filePath = path.join(process.cwd(), 'data', 'tenants.json');
-    const fileData = await fs.readFile(filePath, 'utf-8');
-    const tenants = JSON.parse(fileData);
-
-    return tenants.map((tenant: any) => ({
-        id: tenant.id,
-    }));
 }

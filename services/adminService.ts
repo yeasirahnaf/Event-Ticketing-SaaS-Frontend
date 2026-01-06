@@ -71,6 +71,11 @@ export const adminService = {
     return response.data;
   },
 
+  getTenantById: async (id: string) => {
+    const response = await api.get(`/admin/tenants/${id}`);
+    return response.data;
+  },
+
   createTenant: async (data: any) => {
     const response = await api.post('/admin/tenants', data);
     return response.data;
@@ -88,6 +93,17 @@ export const adminService = {
 
   deleteTenant: async (id: string) => {
     const response = await api.delete(`/admin/tenants/${id}`);
+    return response.data;
+  },
+
+  // Tenant Users
+  createTenantUser: async (data: any) => {
+    const response = await api.post('/admin/tenant-users', data);
+    return response.data;
+  },
+
+  getAllTenantUsers: async (query?: any) => {
+    const response = await api.get('/admin/tenant-users', { params: query });
     return response.data;
   },
 

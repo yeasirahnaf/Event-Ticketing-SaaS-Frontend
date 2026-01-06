@@ -27,7 +27,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <Link href="/login" className="hidden sm:flex text-sm font-black text-slate-950 hover:text-primary px-4 py-2 transition-all">
+                    <Link href="/auth/login" className="hidden sm:flex text-sm font-black text-slate-950 hover:text-primary px-4 py-2 transition-all">
                         Login
                     </Link>
                     <div className="h-6 w-[1px] bg-slate-300 hidden sm:block mx-1"></div>

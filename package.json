@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^1.13.2",
+    "ci": "^2.3.0",
     "daisyui": "^5.5.14",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",

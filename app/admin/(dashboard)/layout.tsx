@@ -25,11 +25,29 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
+
+    React.useEffect(() => {
+        const verifySession = async () => {
+            try {
+                await authService.checkAuth();
+                setIsAuthenticated(true);
+            } catch (error) {
+                // If 401/403, redirect to admin login
+                router.replace('/admin/login');
+            }
+        };
+        verifySession();
+    }, [router]);
 
     async function handleLogout() {
         await authService.logout();
-        router.push('/admin');
+        router.replace('/admin/login');
+    }
+
+    if (!isAuthenticated) {
+        return null; // Or a loading spinner
     }
 
     const navItems = [
