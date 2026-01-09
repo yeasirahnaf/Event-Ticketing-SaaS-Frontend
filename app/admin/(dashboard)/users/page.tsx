@@ -20,6 +20,8 @@ export default function UsersPage() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<any>(null);
 
     useEffect(() => {
         fetchUsers();
@@ -66,6 +68,12 @@ export default function UsersPage() {
         }
     };
 
+    const handleEditClick = (user: any) => {
+        // Prepare user object for modal
+        setSelectedUser(user);
+        setShowEditModal(true);
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -76,7 +84,7 @@ export default function UsersPage() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setShowAddModal(true)}
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-900/20"
                     >
                         <Plus size={18} />
                         Add New User
@@ -111,7 +119,7 @@ export default function UsersPage() {
                         placeholder="Search users..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 w-full md:w-64"
+                        className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 w-full md:w-64" // Updated focus colors
                     />
                 </div>
             </div>
@@ -177,8 +185,11 @@ export default function UsersPage() {
                                             {new Date(user.createdAt).toLocaleDateString()}
                                         </td>
                                         <td className="px-8 py-5 text-right">
-                                            <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-900 transition-colors">
-                                                <MoreHorizontal size={18} />
+                                            <button
+                                                onClick={() => handleEditClick(user)}
+                                                className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold hover:bg-emerald-100 hover:text-emerald-800 transition-colors"
+                                            >
+                                                Edit
                                             </button>
                                         </td>
                                     </tr>
@@ -199,20 +210,30 @@ export default function UsersPage() {
                 onClose={() => setShowAddModal(false)}
                 onSuccess={() => {
                     fetchUsers();
-                    // Optionally show a success toast here
                 }}
+            />
+            {/* Edit User Modal */}
+            <EditUserModal
+                isOpen={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onSuccess={() => {
+                    fetchUsers();
+                }}
+                user={selectedUser}
             />
         </div>
     );
 }
+
+import EditUserModal from './EditUserModal';
 
 function TabButton({ active, onClick, label }: any) {
     return (
         <button
             onClick={onClick}
             className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${active
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                ? 'bg-white text-emerald-700 shadow-sm ring-1 ring-slate-200'
+                : 'text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/50'
                 }`}
         >
             {label}
@@ -223,7 +244,7 @@ function TabButton({ active, onClick, label }: any) {
 function RoleBadge({ role }: { role: string }) {
     if (role === 'Platform Admin') {
         return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-900 text-white ring-1 ring-inset ring-slate-700">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-900 text-emerald-100 ring-1 ring-inset ring-emerald-800">
                 <Shield size={10} className="fill-current" />
                 Admin
             </span>
@@ -231,7 +252,7 @@ function RoleBadge({ role }: { role: string }) {
     }
     if (role === 'Tenant Admin') {
         return (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-600/20">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-amber-100 text-amber-700 ring-1 ring-inset ring-amber-600/20">
                 <Shield size={10} />
                 Tenant
             </span>
@@ -243,6 +264,7 @@ function RoleBadge({ role }: { role: string }) {
         </span>
     );
 }
+
 
 function StatusBadge({ status }: { status: string }) {
     const styles: any = {

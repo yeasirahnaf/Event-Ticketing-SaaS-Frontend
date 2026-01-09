@@ -122,4 +122,32 @@ export const adminService = {
     const response = await api.get('/admin/stats');
     return response.data;
   },
+
+  // Theme operations
+  createTheme: async (data: any) => {
+    const response = await api.post('/admin/themes', data);
+    return response.data;
+  },
+
+  getAllThemes: async (params?: any) => {
+    const response = await api.get('/admin/themes', { params });
+    return response.data;
+  },
+
+  getThemeById: async (id: string) => {
+    const response = await api.get(`/admin/themes/${id}`);
+    return response.data;
+  },
+
+  updateTheme: async (id: string, data: any) => {
+    const response = await api.put(`/admin/themes/${id}`, data);
+    return response.data;
+  },
+
+  deleteTheme: async (id: string) => {
+    const response = await api.delete(`/admin/themes/${id}`);
+    return response.data;
+  },
 };
+
+export default adminService;
