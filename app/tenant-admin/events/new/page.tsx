@@ -6,6 +6,17 @@ import { tenantAdminService, CreateEventDto } from '@/services/tenantAdminServic
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Image as ImageIcon, MapPin, Save, Type } from 'lucide-react';
 
+// Helper function to generate slug from text
+const generateSlug = (text: string): string => {
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+        .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+};
+
 export default function CreateEventPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -23,7 +34,17 @@ export default function CreateEventPage() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        
+        // Auto-generate slug from event name
+        if (name === 'name') {
+            setFormData(prev => ({ 
+                ...prev, 
+                [name]: value,
+                slug: generateSlug(value)
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
