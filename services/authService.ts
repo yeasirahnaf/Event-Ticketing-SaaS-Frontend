@@ -38,7 +38,16 @@ export const authService = {
   },
 
   checkAuth: async () => {
-    const response = await api.get('/auth/me');
-    return response.data;
+    try {
+      const response = await api.get('/auth/me');
+      return response.data;
+    } catch (error: any) {
+      // Re-throw with proper error context
+      throw {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+      };
+    }
   }
 };

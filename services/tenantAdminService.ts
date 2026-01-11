@@ -4,6 +4,7 @@ import api from '@/lib/axios';
 
 export enum EventStatus {
     DRAFT = 'draft',
+    PUBLISHED = 'published',
     SCHEDULED = 'scheduled',
     ACTIVE = 'active',
     CANCELLED = 'cancelled',
@@ -17,8 +18,8 @@ export interface CreateEventDto {
     venue: string;
     city: string;
     country: string;
-    start_at: Date | string;
-    end_at: Date | string;
+    startAt: Date | string;
+    endAt: Date | string;
     status?: EventStatus;
 }
 
@@ -133,8 +134,15 @@ export const tenantAdminService = {
     },
 
     updateEvent: async (eventId: string, data: Partial<CreateEventDto>) => {
-        const response = await api.put(`/tenant-admin/events/${eventId}`, data);
-        return response.data;
+        console.log('updateEvent called with:', { eventId, data });
+        try {
+            const response = await api.put(`/tenant-admin/events/${eventId}`, data);
+            console.log('updateEvent response:', response.data);
+            return response.data;
+        } catch (error: any) {
+            console.error('updateEvent error:', error?.response?.data || error?.message);
+            throw error;
+        }
     },
 
     deleteEvent: async (eventId: string) => {
@@ -270,7 +278,23 @@ export const tenantAdminService = {
     // --- Staff Management ---
     getAllStaff: async (page = 1, limit = 20) => {
         const response = await api.get('/tenant-admin/tenant-users', { params: { page, limit } });
-        return response.data;
+        const data = response.data;
+        
+        // Ensure we return an array and handle pagination
+        const staffList = Array.isArray(data) ? data : (data as any).data || [];
+        
+        // Enrich staff data with user information if not already included
+        return staffList.map((staff: any) => ({
+            id: staff.id || staff.user_id,
+            user_id: staff.user_id,
+            tenant_id: staff.tenant_id,
+            email: staff.email || staff.user?.email,
+            fullName: staff.fullName || staff.full_name || staff.user?.full_name || staff.user?.fullName || 'Team Member',
+            name: staff.name || staff.user?.name,
+            role: staff.role,
+            status: staff.status,
+            ...staff
+        }));
     },
 
     inviteStaff: async (data: InviteStaffDto) => {

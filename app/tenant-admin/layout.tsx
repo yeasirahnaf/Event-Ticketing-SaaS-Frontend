@@ -25,6 +25,26 @@ export default function TenantAdminLayout({
     const router = useRouter();
     const pathname = usePathname();
     const [loggingOut, setLoggingOut] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    React.useEffect(() => {
+        const verifySession = async () => {
+            try {
+                await authService.checkAuth();
+                setIsAuthenticated(true);
+            } catch (error: any) {
+                const status = error?.status;
+                // 401/403 is expected for unauthenticated users - silently redirect
+                if (status === 401 || status === 403) {
+                    router.replace('/auth/login');
+                } else {
+                    console.error('Auth verification failed:', error?.message || error);
+                    router.replace('/auth/login');
+                }
+            }
+        };
+        verifySession();
+    }, [router]);
 
     const handleLogout = async () => {
         setLoggingOut(true);
@@ -37,6 +57,10 @@ export default function TenantAdminLayout({
             setLoggingOut(false);
         }
     };
+
+    if (!isAuthenticated) {
+        return null; // Or a loading spinner
+    }
 
     const NavItem = ({ href, icon: Icon, label }: { href: string; icon: any; label: string }) => {
         const isActive = pathname === href;

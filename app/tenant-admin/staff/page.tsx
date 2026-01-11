@@ -13,7 +13,9 @@ export default function StaffPage() {
             try {
                 const data = await tenantAdminService.getAllStaff();
                 // Ensure data is an array
-                setStaff(Array.isArray(data) ? data : (data as any).data || []);
+                const staffList = Array.isArray(data) ? data : (data as any).data || [];
+                console.log("Staff data:", staffList);
+                setStaff(staffList);
             } catch (error) {
                 console.error("Failed to fetch staff", error);
             } finally {
@@ -55,7 +57,7 @@ export default function StaffPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {staff.map((member) => (
-                        <div key={member.id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl transition-all duration-300 group flex flex-col items-center text-center relative">
+                        <div key={member.id || member.user_id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl transition-all duration-300 group flex flex-col items-center text-center relative">
                             <button className="absolute top-4 right-4 text-slate-300 hover:text-slate-600 transition-colors">
                                 <MoreVertical size={20} />
                             </button>
@@ -65,7 +67,7 @@ export default function StaffPage() {
                                 <User size={40} className="text-slate-400" />
                             </div>
 
-                            <h3 className="font-bold text-slate-900 text-lg">{member.fullName || 'Team Member'}</h3>
+                            <h3 className="font-bold text-slate-900 text-lg">{member.fullName}</h3>
                             <p className="text-sm text-slate-500 font-medium mb-4 flex items-center gap-1">
                                 <Mail size={12} />
                                 {member.email}
@@ -75,9 +77,9 @@ export default function StaffPage() {
                                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold capitalize ${member.status !== 'inactive' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
                                     {member.status || 'Active'}
                                 </span>
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700 capitalize">
                                     <Shield size={10} className="mr-1" />
-                                    Admin
+                                    {member.role || 'Staff'}
                                 </span>
                             </div>
                         </div>

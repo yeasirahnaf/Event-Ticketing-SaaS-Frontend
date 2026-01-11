@@ -18,10 +18,13 @@ api.interceptors.response.use(
     // Handle global errors here
     if (error.response) {
       // Server responded with a status code outside of 2xx
-      console.error('API Error:', error.response.data);
+      // Don't log expected auth errors (401/403) - let consuming code handle
+      if (error.response.status !== 401 && error.response.status !== 403) {
+        console.error('API Error:', error.response.data);
+      }
       if (error.response.status === 401) {
         // Handle unauthorized access (e.g., redirect to login)
-        console.warn('Unauthorized access. Redirecting to login...');
+        // console.warn('Unauthorized access. Redirecting to login...'); // Suppress this
         // window.location.href = '/login'; // Uncomment if needed
       }
     } else if (error.request) {
