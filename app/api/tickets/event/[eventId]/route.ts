@@ -4,10 +4,11 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:700
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
-    const res = await fetch(`${BACKEND_URL}/tickets/event/${params.eventId}`);
+    const { eventId } = await params;
+    const res = await fetch(`${BACKEND_URL}/tickets/event/${eventId}`);
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
@@ -17,13 +18,14 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
     const body = await request.json();
+    const { eventId } = await params;
     
-    const res = await fetch(`${BACKEND_URL}/tickets/event/${params.eventId}`, {
+    const res = await fetch(`${BACKEND_URL}/tickets/event/${eventId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

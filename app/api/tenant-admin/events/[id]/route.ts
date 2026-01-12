@@ -4,12 +4,13 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:700
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
+    const { id } = await params;
     
-    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${params.id}`, {
+    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -24,13 +25,14 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
     const body = await request.json();
+    const { id } = await params;
     
-    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${params.id}`, {
+    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -48,12 +50,13 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
+    const { id } = await params;
     
-    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${params.id}`, {
+    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

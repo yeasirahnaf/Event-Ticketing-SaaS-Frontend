@@ -158,7 +158,7 @@ export default function ThemesPage() {
                 icon={<Palette size={24} />}
                 actionLabel="Create New Theme"
                 actionIcon={<Plus size={20} />}
-                onActionClick={() => setShowCreateModal(true)}
+                onAction={() => setShowCreateModal(true)}
             />
 
             <StatsGrid stats={stats} />

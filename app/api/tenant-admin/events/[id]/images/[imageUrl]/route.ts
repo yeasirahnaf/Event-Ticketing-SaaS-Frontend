@@ -4,13 +4,14 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:700
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; imageUrl: string } }
+  { params }: { params: Promise<{ id: string; imageUrl: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
+    const { id, imageUrl } = await params;
     
     const res = await fetch(
-      `${BACKEND_URL}/tenant-admin/events/${params.id}/images/${params.imageUrl}`,
+      `${BACKEND_URL}/tenant-admin/events/${id}/images/${imageUrl}`,
       {
         method: 'DELETE',
         headers: {

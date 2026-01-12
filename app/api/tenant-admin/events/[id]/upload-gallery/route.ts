@@ -4,13 +4,14 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:700
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const token = request.cookies.get('token')?.value;
     const formData = await request.formData();
+    const { id } = await params;
     
-    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${params.id}/upload-gallery`, {
+    const res = await fetch(`${BACKEND_URL}/tenant-admin/events/${id}/upload-gallery`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
