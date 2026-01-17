@@ -240,14 +240,15 @@ export default function EditEventPage() {
                         <Palette size={18} />
                         Customize Theme
                     </Link>
+                    <span className="text-slate-900/10">|</span>
                     <a
-                        href={`/events/${formData.slug}`}
+                        href={`/${formData.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition-all"
                     >
                         <ExternalLink size={18} />
-                        View Live
+                        {(formData.status === 'active' || formData.status === 'published') ? 'View Live' : 'Preview Event'}
                     </a>
                 </div>
             </div>
@@ -314,7 +315,7 @@ export default function EditEventPage() {
                                     <label className="text-xs font-bold uppercase text-slate-500 tracking-wider">URL Slug <span className="text-red-500">*</span></label>
                                     <div className="flex">
                                         <span className="inline-flex items-center px-4 py-3 rounded-l-xl bg-slate-100 text-slate-500 font-medium border-y border-l border-slate-200 text-sm">
-                                            /events/
+                                            /
                                         </span>
                                         <input
                                             type="text"
@@ -591,9 +592,19 @@ export default function EditEventPage() {
                                 {saving ? 'Saving...' : 'Save Changes'}
                             </button>
 
+                            <a
+                                href={`/${formData.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full inline-flex items-center justify-center gap-2 bg-violet-50 text-violet-700 hover:bg-violet-100 px-6 py-3.5 rounded-xl font-bold transition-all border border-violet-200"
+                            >
+                                <ExternalLink size={18} />
+                                {(formData.status === 'active' || formData.status === 'published') ? 'View Live' : 'Preview Event'}
+                            </a>
+
                             <Link
                                 href={`/tenant-admin/events/${eventId}/customize`}
-                                className="w-full inline-flex items-center justify-center gap-2 bg-violet-50 text-violet-700 hover:bg-violet-100 px-6 py-3.5 rounded-xl font-bold transition-all border border-violet-200"
+                                className="w-full inline-flex items-center justify-center gap-2 bg-slate-50 text-slate-700 hover:bg-slate-100 px-6 py-3.5 rounded-xl font-bold transition-all border border-slate-200"
                             >
                                 <Palette size={18} />
                                 Customize Theme

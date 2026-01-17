@@ -215,7 +215,7 @@ export default function EventsPage() {
                                         Manage
                                     </Link>
                                     <Link
-                                        href={`/events/${event.slug || '#'}`}
+                                        href={`/${event.slug || '#'}`}
                                         target="_blank"
                                         className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm"
                                     >

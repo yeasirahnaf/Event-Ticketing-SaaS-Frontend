@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 
 export default function TenantPublicPage() { // Remove props
     const params = useParams(); // Use the hook
-    const slug = params?.slug as string;
+    const slug = params?.tenantSlug as string;
 
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -18,13 +18,14 @@ export default function TenantPublicPage() { // Remove props
 
     useEffect(() => {
         if (slug) {
-            fetchTenantData(slug);
+            fetchEventData(slug);
         }
     }, [slug]);
 
-    async function fetchTenantData(slug: string) {
+    async function fetchEventData(slug: string) {
         try {
-            const res = await axios.get(`${API_URL}/public/tenant/${slug}`);
+            const res = await axios.get(`${API_URL}/public/events/${slug}`);
+            // Backend returns the event object directly
             setData(res.data);
         } catch (err: any) {
             console.error(err);
@@ -52,7 +53,7 @@ export default function TenantPublicPage() { // Remove props
                     <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                         <AlertCircle className="text-red-500 w-8 h-8" />
                     </div>
-                    <h1 className="text-2xl font-bold text-white mb-2">Page Not Found</h1>
+                    <h1 className="text-2xl font-bold text-white mb-2">Event Not Found</h1>
                     <p className="text-slate-400 mb-6">{error || "The event page you are looking for does not exist."}</p>
                     <a href="/" className="inline-block px-6 py-3 rounded-xl bg-white text-slate-900 font-bold hover:bg-slate-200 transition-colors">Return Home</a>
                 </div>
@@ -60,22 +61,34 @@ export default function TenantPublicPage() { // Remove props
         );
     }
 
-    // Wrap the single event in the mock expected by DynamicThemeRenderer if needed
-    // Actually, DynamicThemeRenderer takes 'event' as a single object.
-    const firstEvent = data.events?.[0] || {};
+    const event = data;
+    const tenant = event.tenant || {};
+    const theme = event.theme;
+
+    // Validate theme existence
+    if (!theme) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+                <div className="text-center text-white">
+                    <h1 className="text-2xl font-bold">Theme Loading Error</h1>
+                    <p className="text-slate-400">This event does not have a valid theme assigned.</p>
+                </div>
+            </div>
+        )
+    }
 
     return (
-        <DynamicThemeRenderer
-            tenant={data.tenant}
-            event={{
-                ...firstEvent,
-                themeContent: data.config?.styleOverrides || {}, // Fallback mapping
-                themeCustomization: data.config?.styleOverrides?.colors ? {
-                    primaryColor: data.config.styleOverrides.colors.primary,
-                    secondaryColor: data.config.styleOverrides.colors.secondary
-                } : {}
-            }}
-            theme={data.theme}
-        />
+        <>
+            {event.status !== 'active' && event.status !== 'published' && (
+                <div className="bg-amber-400 text-amber-950 px-4 py-2 text-center font-bold text-sm fixed top-0 left-0 right-0 z-50 shadow-md">
+                    ⚠️ PREVIEW MODE: This event is currently {event.status}.
+                </div>
+            )}
+            <DynamicThemeRenderer
+                tenant={tenant}
+                event={event}
+                theme={theme}
+            />
+        </>
     );
 }

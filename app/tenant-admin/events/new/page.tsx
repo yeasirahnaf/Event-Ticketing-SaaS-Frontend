@@ -227,7 +227,7 @@ export default function CreateEventPage() {
                                 <label className="text-sm font-bold text-slate-700">URL Slug <span className="text-red-500">*</span></label>
                                 <div className="flex rounded-xl bg-slate-50 border border-slate-200 overflow-hidden focus-within:border-violet-500 focus-within:ring-4 focus-within:ring-violet-500/10 transition-all">
                                     <span className="px-4 py-3 bg-slate-100 text-slate-500 font-medium border-r border-slate-200 text-sm flex items-center">
-                                        /events/
+                                        /
                                     </span>
                                     <input
                                         type="text"
