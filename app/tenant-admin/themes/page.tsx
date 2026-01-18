@@ -72,7 +72,7 @@ export default function TenantThemesPage() {
 
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20 px-4 lg:px-0">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-20 px-4 lg:px-0">
             {/* ATMOSPHERIC MARKETPLACE HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-10 text-white shadow-2xl relative overflow-hidden ring-1 ring-white/10 group">
                 {/* Background Patterns */}
@@ -86,12 +86,12 @@ export default function TenantThemesPage() {
                                 <ShoppingBag className="text-emerald-400" size={28} />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Operational Ecosystem</span>
-                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Theme Matrix</h1>
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Themes Marketplace</span>
+                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Available Themes</h1>
                             </div>
                         </div>
                         <p className="text-emerald-100/60 text-xs font-medium leading-relaxed max-w-lg">
-                            Deploy atmospheric interfaces for your operational environments. Browse the global theme matrix or access your synchronized library.
+                            Browse and acquire premium themes for your events. Explore the marketplace or manage your existing theme library.
                         </p>
                     </div>
 
@@ -135,7 +135,7 @@ export default function TenantThemesPage() {
                             <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={18} />
                             <input
                                 type="text"
-                                placeholder="Scan Theme Repository..."
+                                placeholder="Search themes..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-12 pr-6 py-3.5 bg-slate-50 border border-slate-50 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all text-xs font-bold text-slate-900 outline-none shadow-inner"
@@ -144,8 +144,8 @@ export default function TenantThemesPage() {
 
                         <div className="flex items-center gap-2 p-1 bg-slate-50 rounded-2xl border border-slate-100 shadow-inner w-full md:w-auto overflow-x-auto no-scrollbar">
                             {[
-                                { id: 'all', label: 'Global Matrix' },
-                                { id: 'free', label: 'Standard' },
+                                { id: 'all', label: 'All Themes' },
+                                { id: 'free', label: 'Free' },
                                 { id: 'paid', label: 'Premium' }
                             ].map(filter => (
                                 <button
@@ -174,13 +174,13 @@ export default function TenantThemesPage() {
                             <div className="w-20 h-20 rounded-3xl bg-slate-100 flex items-center justify-center mb-6 text-slate-300">
                                 <Search size={40} />
                             </div>
-                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Zero Matches Found</h3>
-                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">The requested operational interface is not in the matrix.</p>
+                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">No Themes Found</h3>
+                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">No themes match your search criteria.</p>
                             <button
                                 onClick={() => { setSearchTerm(''); setPriceFilter('all'); }}
                                 className="mt-8 px-8 py-3 bg-white border border-slate-200 rounded-[1.2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:border-emerald-500 hover:text-emerald-600 transition-all shadow-sm"
                             >
-                                Reset Matrix Scan
+                                Reset Search
                             </button>
                         </div>
                     ) : (
@@ -206,13 +206,13 @@ export default function TenantThemesPage() {
                             <div className="w-20 h-20 rounded-3xl bg-slate-100 flex items-center justify-center mb-6 text-slate-300 shadow-inner">
                                 <Layout size={40} />
                             </div>
-                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Library Offline</h3>
-                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">No themes have been synchronized to your local environment yet.</p>
+                            <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Library Empty</h3>
+                            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-2">You haven't acquired any themes yet.</p>
                             <button
                                 onClick={() => setActiveTab('marketplace')}
                                 className="mt-8 px-8 py-3 bg-emerald-600 text-white rounded-[1.2rem] text-[10px] font-black uppercase tracking-[0.2em] hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-500/20"
                             >
-                                Access Marketplace Hub
+                                Go to Marketplace
                             </button>
                         </div>
                     ) : (
@@ -261,7 +261,7 @@ function ThemeMarketplaceCard({ theme, owned, purchaseDate, onPurchase }: { them
                 ) : (
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-300 bg-slate-50">
                         <Box size={40} className="mb-2 opacity-20" />
-                        <span className="text-[8px] font-black uppercase tracking-widest">No Buffer Data</span>
+                        <span className="text-[8px] font-black uppercase tracking-widest">No Image</span>
                     </div>
                 )}
 
@@ -273,7 +273,7 @@ function ThemeMarketplaceCard({ theme, owned, purchaseDate, onPurchase }: { them
                     {owned && (
                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-500/90 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-[0.2em] shadow-xl border border-emerald-400">
                             <ShieldCheck size={12} />
-                            Synchronized
+                            Owned
                         </div>
                     )}
                 </div>
@@ -295,7 +295,7 @@ function ThemeMarketplaceCard({ theme, owned, purchaseDate, onPurchase }: { them
                             className="bg-white text-slate-900 px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 shadow-2xl hover:scale-105 active:scale-95 transition-all"
                         >
                             <Zap size={14} className="text-emerald-500" />
-                            Initialize Acquisition
+                            Acquire Now
                         </button>
                     </div>
                 )}
@@ -323,7 +323,7 @@ function ThemeMarketplaceCard({ theme, owned, purchaseDate, onPurchase }: { them
                         <div className="mt-4 flex items-center gap-2 py-2 px-3 bg-slate-50 rounded-xl border border-slate-100 self-start">
                             <Clock size={12} className="text-slate-300" />
                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                DEPLOYED: {new Date(purchaseDate).toLocaleDateString()}
+                                ACQUIRED: {new Date(purchaseDate).toLocaleDateString()}
                             </span>
                         </div>
                     )}
@@ -348,7 +348,7 @@ function ThemeMarketplaceCard({ theme, owned, purchaseDate, onPurchase }: { them
                     {owned ? (
                         <div className="flex items-center gap-2 text-emerald-500/60 font-black text-[10px] uppercase tracking-[0.2em] px-4 py-2 bg-emerald-50/30 rounded-xl border border-emerald-100/30 cursor-default">
                             <Check size={14} strokeWidth={3} />
-                            Validated
+                            Owned
                         </div>
                     ) : (
                         <button
@@ -388,13 +388,13 @@ function PurchaseModal({ theme, onClose, onSuccess }: { theme: Theme; onClose: (
     if (isSuccess) {
         return (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl" onClick={onSuccess}>
-                <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden p-8 text-center animate-in zoom-in-95 duration-500 border border-emerald-500/20" onClick={e => e.stopPropagation()}>
+                <div className="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden p-8 text-center border border-emerald-500/20" onClick={e => e.stopPropagation()}>
                     <div className="w-16 h-16 bg-emerald-100/50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 relative">
                         <div className="absolute inset-0 bg-emerald-400 blur-2xl opacity-20 animate-pulse"></div>
                         <Check size={32} strokeWidth={4} className="relative z-10" />
                     </div>
 
-                    <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">Sync Complete</h3>
+                    <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight">Purchase Successful</h3>
                     <p className="text-slate-500 text-xs mb-8 font-medium leading-relaxed max-w-[280px] mx-auto">
                         The <span className="font-black text-emerald-600 italic">"{theme.name}"</span> interface has been integrated into your profile.
                     </p>
@@ -403,7 +403,7 @@ function PurchaseModal({ theme, onClose, onSuccess }: { theme: Theme; onClose: (
                         onClick={onSuccess}
                         className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-emerald-600 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] group"
                     >
-                        Access Library Hub
+                        Go to Library
                     </button>
 
                     <p className="text-[9px] font-black text-slate-400 mt-6 uppercase tracking-[0.4em] flex items-center justify-center gap-2">
@@ -417,7 +417,7 @@ function PurchaseModal({ theme, onClose, onSuccess }: { theme: Theme; onClose: (
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md" onClick={onClose}>
-            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 duration-500 border border-slate-100" onClick={e => e.stopPropagation()}>
+            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden border border-slate-100" onClick={e => e.stopPropagation()}>
                 {/* Modal Header */}
                 <div className="bg-[#022c22] p-6 lg:p-8 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-1/3 h-full bg-emerald-500/10 skew-x-12 translate-x-1/2"></div>
@@ -426,9 +426,9 @@ function PurchaseModal({ theme, onClose, onSuccess }: { theme: Theme; onClose: (
                             <Box className="text-emerald-400" size={24} />
                         </div>
                         <div>
-                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80 mb-0.5 block">Acquisition Module</span>
+                            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80 mb-0.5 block">Purchase Theme</span>
                             <h3 className="text-xl font-black uppercase tracking-tight leading-none">
-                                {isFree ? 'Initialize Sync' : 'Acquire UI Matrix'}
+                                {isFree ? 'Confirm Theme' : 'Purchase Premium Theme'}
                             </h3>
                         </div>
                     </div>

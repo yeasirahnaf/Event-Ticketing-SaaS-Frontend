@@ -48,7 +48,7 @@ export default function EventsPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-12">
 
             {/* COMPACT ECOSYSTEM HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-8 text-white shadow-xl relative overflow-hidden ring-1 ring-white/10">
@@ -60,11 +60,11 @@ export default function EventsPage() {
                     </div>
                     <div className="flex-1 text-center md:text-left space-y-1.5">
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-black uppercase tracking-widest border border-emerald-500/30">
-                            <Layers size={10} fill="currentColor" /> Event Operations
+                            <Layers size={10} fill="currentColor" /> Events
                         </div>
-                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Event Matrix</h1>
+                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Event Management</h1>
                         <p className="text-emerald-100/60 text-xs font-medium max-w-xl mx-auto md:mx-0">
-                            Managing event life-cycles. Monitoring throughput, capacity, and engagement across your organization's portfolio.
+                            Manage your events, monitor ticket sales and track capacity across your organization's portfolio.
                         </p>
                     </div>
                     <div className="shrink-0">
@@ -82,9 +82,9 @@ export default function EventsPage() {
             {/* PERFORMANCE GRID - EVENT STATS */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
                 <CompactStatCard label="Total Events" value={stats.total} icon={CalendarDays} color="slate" />
-                <CompactStatCard label="Active Status" value={stats.active} icon={CheckCircle2} color="emerald" />
-                <CompactStatCard label="Draft Iterations" value={stats.draft} icon={Activity} color="amber" />
-                <CompactStatCard label="Global Capacity" value={stats.totalCapacity} icon={Ticket} color="emerald" />
+                <CompactStatCard label="Active Events" value={stats.active} icon={CheckCircle2} color="emerald" />
+                <CompactStatCard label="Draft Events" value={stats.draft} icon={Activity} color="amber" />
+                <CompactStatCard label="Total Capacity" value={stats.totalCapacity} icon={Ticket} color="emerald" />
             </div>
 
             {/* FILTER & SEARCH HUB */}
@@ -92,7 +92,7 @@ export default function EventsPage() {
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                     {/* Compact Tabs */}
                     <div className="flex p-1.5 bg-slate-50 rounded-2xl border border-slate-100 w-full md:w-auto overflow-x-auto no-scrollbar">
-                        <ModernTabButton active={filterStatus === 'all'} onClick={() => setFilterStatus('all')} label="All Matrix" />
+                        <ModernTabButton active={filterStatus === 'all'} onClick={() => setFilterStatus('all')} label="All Events" />
                         <ModernTabButton active={filterStatus === 'active'} onClick={() => setFilterStatus('active')} label="Active" />
                         <ModernTabButton active={filterStatus === 'draft'} onClick={() => setFilterStatus('draft')} label="Draft" />
                         <ModernTabButton active={filterStatus === 'ended'} onClick={() => setFilterStatus('ended')} label="Ended" />
@@ -103,7 +103,7 @@ export default function EventsPage() {
                         <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors" size={18} />
                         <input
                             type="text"
-                            placeholder="Scan events by name, venue or network vector..."
+                            placeholder="Search events by name or venue..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-50 rounded-[2rem] text-[13px] font-bold focus:bg-white focus:border-emerald-500 focus:ring-8 focus:ring-emerald-500/5 outline-none transition-all placeholder:text-slate-300"
@@ -124,10 +124,10 @@ export default function EventsPage() {
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 bg-slate-50/50">
-                                <th className="px-8 py-5 text-left">Event Identity</th>
-                                <th className="px-8 py-5 text-left">Deployment State</th>
-                                <th className="px-8 py-5 text-left">Throughput</th>
-                                <th className="px-8 py-5 text-right">Directives</th>
+                                <th className="px-8 py-5 text-left">Event Name</th>
+                                <th className="px-8 py-5 text-left">Status</th>
+                                <th className="px-8 py-5 text-left">Tickets Sold</th>
+                                <th className="px-8 py-5 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">

@@ -44,17 +44,17 @@ export default function OrdersPage() {
             pending: {
                 bg: 'bg-amber-500/10',
                 text: 'text-amber-500',
-                label: 'WAITING'
+                label: 'PENDING'
             },
             failed: {
                 bg: 'bg-red-500/10',
                 text: 'text-red-500',
-                label: 'ERROR'
+                label: 'FAILED'
             },
             refunded: {
                 bg: 'bg-slate-500/10',
                 text: 'text-slate-500',
-                label: 'VOID'
+                label: 'REFUNDED'
             }
         };
 
@@ -72,7 +72,7 @@ export default function OrdersPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20 px-4 lg:px-0">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-20 px-4 lg:px-0">
             {/* ATMOSPHERIC TRANSACTION HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-10 text-white shadow-2xl relative overflow-hidden ring-1 ring-white/10 group">
                 {/* Background Patterns */}
@@ -86,12 +86,12 @@ export default function OrdersPage() {
                                 <ShoppingCart size={28} className="text-emerald-400" />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Financial Intelligence</span>
-                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Transaction Ledger</h1>
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Order Management</span>
+                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Order List</h1>
                             </div>
                         </div>
                         <p className="text-emerald-100/60 text-xs font-medium leading-relaxed max-w-lg">
-                            Monitor and manage all transactional throughput across your ecosystem. Audit orders, track financial identity, and export ledger data.
+                            Monitor and manage all orders and transactions. Audit customer info, track sales performance, and export transaction data.
                         </p>
                     </div>
 

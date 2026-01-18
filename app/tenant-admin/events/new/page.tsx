@@ -194,7 +194,7 @@ export default function CreateEventPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-20">
             {/* COMPACT ECOSYSTEM HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-8 text-white shadow-xl relative overflow-hidden ring-1 ring-white/10">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
@@ -206,11 +206,11 @@ export default function CreateEventPage() {
                     <div className="flex-1 text-center md:text-left space-y-1.5">
                         <Link href="/tenant-admin/events" className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-bold mb-1 transition-colors text-[10px] uppercase tracking-widest bg-white/5 px-3 py-1 rounded-full border border-white/10">
                             <ArrowLeft size={12} />
-                            Back to Matrix
+                            Back to Events
                         </Link>
-                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Initialize Event</h1>
+                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Create Event</h1>
                         <p className="text-emerald-100/60 text-xs font-medium max-w-xl mx-auto md:mx-0">
-                            Deploying a new operational environment. Configure your event identity, schedule, and theme to begin throughput monitoring.
+                            Set up your new event. Configure the event details, schedule, and theme to start selling tickets.
                         </p>
                     </div>
                 </div>
@@ -247,15 +247,15 @@ export default function CreateEventPage() {
                                 <Layout size={24} />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Ecosystem Essentials</h2>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Event Identity & Network Parameters</p>
+                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Event Details</h2>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Name, Slug, and Description</p>
                             </div>
                         </div>
 
                         <div className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="md:col-span-2 space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Event Designation</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Event Name</label>
                                     <input
                                         type="text"
                                         name="name"
@@ -268,7 +268,7 @@ export default function CreateEventPage() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Network Slug</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Url Slug</label>
                                     <div className="flex rounded-2xl bg-slate-50 border border-slate-50 overflow-hidden focus-within:bg-white focus-within:border-emerald-500 focus-within:ring-8 focus-within:ring-emerald-500/5 transition-all">
                                         <span className="px-4 py-4 bg-slate-100/50 text-slate-400 font-black border-r border-slate-100 text-[10px]">
                                             /
@@ -287,7 +287,7 @@ export default function CreateEventPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Pulse Description</label>
+                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Brief Description</label>
                                 <textarea
                                     name="description"
                                     required
@@ -300,7 +300,7 @@ export default function CreateEventPage() {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Extended Matrix Data</label>
+                                <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Long Description</label>
                                 <textarea
                                     name="fullDescription"
                                     rows={4}
@@ -320,8 +320,8 @@ export default function CreateEventPage() {
                                 <Calendar size={24} />
                             </div>
                             <div>
-                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Temporal Window</h2>
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Schedule Configuration & Duration</p>
+                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Event Schedule</h2>
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manage Dates and Times</p>
                             </div>
                         </div>
 
@@ -329,7 +329,7 @@ export default function CreateEventPage() {
                             <div className="space-y-3 p-6 rounded-3xl bg-slate-50/50 border border-slate-50 group transition-all hover:border-emerald-500/20 hover:bg-emerald-50/10">
                                 <div className="flex items-center gap-2 mb-1">
                                     <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"></div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-emerald-600 transition-colors ml-1">Deployment Start</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-emerald-600 transition-colors ml-1">Start Date/Time</span>
                                 </div>
                                 <div className="relative group/picker">
                                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/picker:text-emerald-500 group-hover/picker:text-emerald-500 pointer-events-none transition-colors">
@@ -361,7 +361,7 @@ export default function CreateEventPage() {
                             <div className="space-y-3 p-6 rounded-3xl bg-slate-50/50 border border-slate-50 group transition-all hover:border-red-500/20 hover:bg-red-50/10">
                                 <div className="flex items-center gap-2 mb-1">
                                     <div className="w-2 h-2 rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]"></div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-600 transition-colors ml-1">Deployment End</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-600 transition-colors ml-1">End Date/Time</span>
                                 </div>
                                 <div className="relative group/picker">
                                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within/picker:text-red-500 group-hover/picker:text-red-500 pointer-events-none transition-colors">
@@ -401,8 +401,8 @@ export default function CreateEventPage() {
                                     <Palette size={24} />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Visual Interface</h2>
-                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Atmospheric Theme & UI Selection</p>
+                                    <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Theme Selection</h2>
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Choose the visual style for your event page</p>
                                 </div>
                             </div>
 
@@ -413,7 +413,7 @@ export default function CreateEventPage() {
                                     onChange={(e) => setFilterPrice(e.target.value as any)}
                                     className="px-3 py-1.5 rounded-xl bg-white border border-slate-100 text-[10px] font-black uppercase tracking-wider outline-none shadow-sm focus:border-emerald-500 transition-all cursor-pointer"
                                 >
-                                    <option value="all">Global Tier</option>
+                                    <option value="all">All Tiers</option>
                                     <option value="free">Standard</option>
                                     <option value="premium">Premium</option>
                                 </select>
@@ -432,7 +432,7 @@ export default function CreateEventPage() {
                         {fetchingThemes ? (
                             <div className="flex flex-col items-center justify-center p-20 text-slate-400">
                                 <span className="loading loading-spinner loading-lg text-emerald-500 mb-4"></span>
-                                <p className="text-[10px] font-black uppercase tracking-[0.3em]">Synchronizing Theme Matrix...</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em]">Loading themes...</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -460,7 +460,7 @@ export default function CreateEventPage() {
                                                 ) : (
                                                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 bg-slate-50">
                                                         <Palette size={32} className="mb-2 opacity-20" />
-                                                        <span className="text-[8px] font-black uppercase tracking-widest">No Buffer Data</span>
+                                                        <span className="text-[8px] font-black uppercase tracking-widest">No Image</span>
                                                     </div>
                                                 )}
 
@@ -473,7 +473,7 @@ export default function CreateEventPage() {
                                                     </span>
                                                     {owned && theme.isPremium && (
                                                         <span className="px-2 py-0.5 rounded-full text-[7px] font-black bg-white/90 text-emerald-600 uppercase tracking-widest shadow-lg border border-emerald-100">
-                                                            SYNCHRONIZED
+                                                            OWNED
                                                         </span>
                                                     )}
                                                 </div>
@@ -487,7 +487,7 @@ export default function CreateEventPage() {
                                                 )}
 
                                                 {isSelected && (
-                                                    <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center backdrop-blur-[1px] animate-in zoom-in duration-300">
+                                                    <div className="absolute inset-0 bg-emerald-500/20 flex items-center justify-center backdrop-blur-[1px]">
                                                         <div className="bg-white text-emerald-600 rounded-full p-2.5 shadow-2xl scale-in-center border-4 border-emerald-500/20">
                                                             <CheckCircle2 size={24} fill="currentColor" className="text-white" />
                                                         </div>
@@ -522,7 +522,7 @@ export default function CreateEventPage() {
                                                             onClick={(e) => e.stopPropagation()}
                                                             className="text-[8px] font-black text-slate-400 hover:text-emerald-500 uppercase tracking-[0.2em] transition-colors"
                                                         >
-                                                            Inspect UI
+                                                            Preview Theme
                                                         </a>
                                                     )}
                                                 </div>
@@ -539,7 +539,7 @@ export default function CreateEventPage() {
                                 className="text-[10px] font-black text-emerald-600 hover:text-emerald-700 flex items-center gap-3 transition-all uppercase tracking-[0.3em] bg-emerald-50/50 px-8 py-4 rounded-2xl border border-emerald-100 hover:shadow-lg hover:-translate-y-0.5"
                             >
                                 <ShoppingBag size={14} />
-                                Access Marketplace Hub
+                                Go to Marketplace
                             </Link>
                         </div>
                     </div>
@@ -555,26 +555,26 @@ export default function CreateEventPage() {
                                 <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner group-hover:text-emerald-500 transition-colors">
                                     <Settings size={20} />
                                 </div>
-                                <h3 className="font-black text-slate-900 text-xs uppercase tracking-widest">Global Directives</h3>
+                                <h3 className="font-black text-slate-900 text-xs uppercase tracking-widest">Event Settings</h3>
                             </div>
 
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Deployment State</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Event Status</label>
                                     <select
                                         name="status"
                                         value={formData.status}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-50 focus:bg-white focus:border-emerald-500 transition-all text-slate-900 font-bold text-sm outline-none cursor-pointer"
                                     >
-                                        <option value={EventStatus.DRAFT}>OFFLINE (DRAFT)</option>
-                                        <option value={EventStatus.PUBLISHED}>ACTIVE (LIVE)</option>
+                                        <option value={EventStatus.DRAFT}>DRAFT (HIDDEN)</option>
+                                        <option value={EventStatus.PUBLISHED}>PUBLISHED (LIVE)</option>
                                         <option value={EventStatus.SCHEDULED}>SCHEDULED</option>
                                     </select>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Base Access Price</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Ticket Price</label>
                                     <div className="flex rounded-2xl bg-slate-50 border border-slate-50 overflow-hidden focus-within:bg-white focus-within:border-emerald-500 transition-all">
                                         <span className="px-4 py-3 bg-slate-100/50 text-slate-400 font-black text-xs flex items-center border-r border-slate-100">৳</span>
                                         <input
@@ -597,12 +597,12 @@ export default function CreateEventPage() {
                                 <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center shadow-inner group-hover:text-blue-500 transition-colors">
                                     <MapPin size={20} />
                                 </div>
-                                <h3 className="font-black text-slate-900 text-xs uppercase tracking-widest">Geographical Node</h3>
+                                <h3 className="font-black text-slate-900 text-xs uppercase tracking-widest">Location & Capacity</h3>
                             </div>
 
                             <div className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Primary Venue</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Venue Name</label>
                                     <input
                                         type="text"
                                         name="venue"
@@ -615,7 +615,7 @@ export default function CreateEventPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">City Node</label>
+                                        <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">City</label>
                                         <input
                                             type="text"
                                             name="city"
@@ -651,18 +651,18 @@ export default function CreateEventPage() {
                                 {loading ? (
                                     <>
                                         <span className="loading loading-spinner loading-xs"></span>
-                                        Synchronizing...
+                                        Creating...
                                     </>
                                 ) : (
                                     <>
                                         <Save size={18} className="group-hover:rotate-12 transition-transform" />
-                                        Initialize Matrix
+                                        Create Event
                                     </>
                                 )}
                             </div>
                         </button>
                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-center px-4">
-                            * Verify all operational parameters before initializing the event environment.
+                            * Please verify all event details before creating your event.
                         </p>
                     </div>
                 </div>

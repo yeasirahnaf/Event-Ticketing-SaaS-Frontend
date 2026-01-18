@@ -337,7 +337,7 @@ function EditorSection({ title, icon, children, active, onToggle }: any) {
                 <ChevronLeft size={16} className={`text-slate-400 transition-transform ${active ? '-rotate-90' : 'rotate-180'}`} />
             </button>
             {active && (
-                <div className="p-4 pt-0 animate-in slide-in-from-top-2 duration-200">
+                <div className="p-4 pt-0">
                     {children}
                 </div>
             )}

@@ -234,7 +234,7 @@ export default function EditEventPage() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20 px-4 lg:px-0">
+        <div className="max-w-6xl mx-auto space-y-6 pb-20 px-4 lg:px-0">
             {/* ATMOSPHERIC OPERATION HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-8 text-white shadow-2xl relative overflow-hidden ring-1 ring-white/10 group">
                 {/* Background Patterns */}
@@ -245,16 +245,16 @@ export default function EditEventPage() {
                     <div className="space-y-3 max-w-2xl">
                         <Link href="/tenant-admin/events" className="inline-flex items-center gap-2 text-emerald-500/80 hover:text-emerald-400 font-black text-[9px] uppercase tracking-[0.3em] transition-all group/back">
                             <ArrowLeft size={14} className="group-hover/back:-translate-x-1 transition-transform" />
-                            Return to Matrix
+                            Return to Events
                         </Link>
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-xl">
                                 <Settings size={24} className="text-emerald-400" />
                             </div>
                             <div className="flex flex-col gap-0.5">
-                                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Operation Brief</span>
+                                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Event Brief</span>
                                 <h1 className="text-xl lg:text-2xl font-black tracking-tight text-white uppercase leading-none">
-                                    {formData.name || 'Untitled Operation'}
+                                    {formData.name || 'Untitled Event'}
                                 </h1>
                             </div>
                         </div>
@@ -289,7 +289,7 @@ export default function EditEventPage() {
                     {(error || successMessage) && (
                         <div className="space-y-4">
                             {error && (
-                                <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5 flex items-start gap-4 animate-in slide-in-from-top-2 duration-300">
+                                <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5 flex items-start gap-4">
                                     <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0 text-red-500 shadow-lg shadow-red-500/20">
                                         <AlertCircle size={20} />
                                     </div>
@@ -311,7 +311,7 @@ export default function EditEventPage() {
                             )}
 
                             {successMessage && (
-                                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-5 flex items-center gap-4 animate-in slide-in-from-top-2 duration-300">
+                                <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-2xl p-5 flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-500 shadow-lg shadow-emerald-500/20">
                                         <CheckCircle2 size={20} />
                                     </div>
@@ -331,14 +331,14 @@ export default function EditEventPage() {
                                 <Type size={24} />
                             </div>
                             <div>
-                                <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Strategic Essentials</h2>
-                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Core Identity & Operational Narrative</p>
+                                <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Event Details</h2>
+                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Core Identity & Description</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                             <div className="space-y-2.5 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">Operation Codename</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">Event Name</label>
                                 <input
                                     type="text"
                                     name="name"
@@ -351,7 +351,7 @@ export default function EditEventPage() {
                             </div>
 
                             <div className="space-y-2.5 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">Digital Path (Slug)</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">URL Slug</label>
                                 <div className="flex relative">
                                     <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-black text-xs">/</div>
                                     <input
@@ -367,7 +367,7 @@ export default function EditEventPage() {
                         </div>
 
                         <div className="space-y-2.5 group/field">
-                            <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">Executive Summary</label>
+                            <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-emerald-500 transition-colors">Event Description</label>
                             <textarea
                                 name="description"
                                 required
@@ -387,14 +387,14 @@ export default function EditEventPage() {
                                 <MapPin size={24} />
                             </div>
                             <div>
-                                <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Deployment Config</h2>
-                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Geolocation & Unit Capacity</p>
+                                <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Location & Capacity</h2>
+                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Venue & Attendance Limits</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                             <div className="space-y-2.5 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-blue-500 transition-colors">Installation Venue</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-blue-500 transition-colors">Venue Name</label>
                                 <input
                                     type="text"
                                     name="venue"
@@ -405,7 +405,7 @@ export default function EditEventPage() {
                                 />
                             </div>
                             <div className="space-y-2.5 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-blue-500 transition-colors">Sector (City)</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-blue-500 transition-colors">City</label>
                                 <input
                                     type="text"
                                     name="city"
@@ -429,7 +429,7 @@ export default function EditEventPage() {
                                 />
                             </div>
                             <div className="space-y-2.5 group/field opacity-60">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em]">National Jurisdiction</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em]">Country</label>
                                 <input
                                     type="text"
                                     name="country"
@@ -449,8 +449,8 @@ export default function EditEventPage() {
                                     <Palette size={24} />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Visual Matrix</h2>
-                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Atmospheric Interface Configuration</p>
+                                    <h2 className="text-lg font-black text-slate-900 uppercase tracking-tight leading-none mb-1">Theme Selection</h2>
+                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Choose visual interface</p>
                                 </div>
                             </div>
 
@@ -480,7 +480,7 @@ export default function EditEventPage() {
                         {fetchingThemes ? (
                             <div className="flex flex-col items-center justify-center py-16 text-slate-300 gap-4">
                                 <span className="loading loading-spinner loading-md text-pink-500"></span>
-                                <span className="text-[9px] font-black uppercase tracking-[0.3em] animate-pulse">Scanning Visual Assets...</span>
+                                <span className="text-[9px] font-black uppercase tracking-[0.3em] animate-pulse">Loading themes...</span>
                             </div>
                         ) : (
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
@@ -508,7 +508,7 @@ export default function EditEventPage() {
                                                 ) : (
                                                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-300 bg-slate-50">
                                                         <Palette size={20} className="mb-1.5 opacity-50" />
-                                                        <span className="text-[9px] font-black uppercase tracking-widest">No Pattern</span>
+                                                        <span className="text-[9px] font-black uppercase tracking-widest">No Image</span>
                                                     </div>
                                                 )}
 
@@ -521,13 +521,13 @@ export default function EditEventPage() {
                                                     </span>
                                                     {owned && theme.isPremium && (
                                                         <span className="px-2 py-1 rounded-lg text-[8px] font-black bg-emerald-500 text-white uppercase tracking-widest shadow-lg border border-emerald-400">
-                                                            Authorized
+                                                            Owned
                                                         </span>
                                                     )}
                                                 </div>
 
                                                 {!owned && (
-                                                    <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center backdrop-blur-[2px] animate-in fade-in duration-500">
+                                                    <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center backdrop-blur-[2px]">
                                                         <div className="bg-white text-slate-900 rounded-2xl p-4 shadow-2xl border border-white">
                                                             <Lock size={24} className="animate-pulse" />
                                                         </div>
@@ -535,7 +535,7 @@ export default function EditEventPage() {
                                                 )}
 
                                                 {selected && (
-                                                    <div className="absolute inset-0 bg-violet-900/40 flex items-center justify-center backdrop-blur-[2px] animate-in zoom-in-95 duration-500">
+                                                    <div className="absolute inset-0 bg-violet-900/40 flex items-center justify-center backdrop-blur-[2px]">
                                                         <div className="bg-white text-violet-600 rounded-full p-4 shadow-2xl ring-8 ring-white/20">
                                                             <CheckCircle2 size={32} />
                                                         </div>
@@ -559,7 +559,7 @@ export default function EditEventPage() {
                                 className="px-8 py-4 rounded-2xl bg-slate-900 text-white text-[9px] font-black uppercase tracking-[0.3em] hover:bg-black transition-all group flex items-center gap-3 shadow-xl shadow-slate-900/10"
                             >
                                 <ShoppingBag size={12} className="group-hover:animate-bounce" />
-                                Acquire More Asset Patterns
+                                Go to Marketplace
                             </Link>
                         </div>
                     </div>
@@ -575,8 +575,8 @@ export default function EditEventPage() {
                                 <Settings size={20} />
                             </div>
                             <div>
-                                <h3 className="font-black text-slate-900 uppercase tracking-tight text-sm leading-none mb-1 text-slate-900">Action Hub</h3>
-                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Mission Critical Operations</p>
+                                <h3 className="font-black text-slate-900 uppercase tracking-tight text-sm leading-none mb-1 text-slate-900">Event Actions</h3>
+                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Manage Event Settings</p>
                             </div>
                         </div>
 
@@ -589,7 +589,7 @@ export default function EditEventPage() {
                                 <div className="absolute inset-0 bg-emerald-500 translate-y-full group-hover/save:translate-y-[85%] transition-transform duration-700 opacity-20"></div>
                                 <div className="relative z-10 flex items-center justify-center gap-3">
                                     {saving ? <span className="loading loading-spinner loading-xs"></span> : <Save size={18} strokeWidth={3} />}
-                                    {saving ? 'Syncing...' : 'Save Configuration'}
+                                    {saving ? 'Saving...' : 'Update Event'}
                                 </div>
                             </button>
 
@@ -607,7 +607,7 @@ export default function EditEventPage() {
                                 className="w-full flex items-center justify-center gap-3 text-red-500/50 hover:text-red-500 hover:bg-red-50 px-7 py-3 rounded-xl font-black text-[9px] uppercase tracking-[0.3em] transition-all border-2 border-transparent hover:border-red-50 mt-2 active:scale-95"
                             >
                                 <Trash2 size={16} />
-                                Terminate Operation
+                                Delete Event
                             </button>
                         </div>
                     </div>
@@ -620,13 +620,13 @@ export default function EditEventPage() {
                             </div>
                             <div>
                                 <h3 className="font-black text-slate-900 uppercase tracking-tight text-sm leading-none mb-1 text-red-600/80">Schedule</h3>
-                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Temporal Constraints</p>
+                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Date & Time Settings</p>
                             </div>
                         </div>
 
                         <div className="space-y-6">
                             <div className="space-y-2 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-red-500 transition-colors">Activation Sequence</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-red-500 transition-colors">Start Date/Time</label>
                                 <input
                                     type="datetime-local"
                                     name="startAt"
@@ -637,7 +637,7 @@ export default function EditEventPage() {
                                 />
                             </div>
                             <div className="space-y-2 group/field">
-                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-red-500 transition-colors">Termination Sequence</label>
+                                <label className="text-[9px] font-black uppercase text-slate-400 tracking-[0.3em] group-focus-within/field:text-red-500 transition-colors">End Date/Time</label>
                                 <input
                                     type="datetime-local"
                                     name="endAt"
@@ -658,7 +658,7 @@ export default function EditEventPage() {
                             </div>
                             <div>
                                 <h3 className="font-black text-slate-900 uppercase tracking-tight text-sm leading-none mb-1 text-amber-600/80">Status</h3>
-                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Mission Lifecycle</p>
+                                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">Event State</p>
                             </div>
                         </div>
 
@@ -670,12 +670,12 @@ export default function EditEventPage() {
                                     onChange={handleChange}
                                     className="w-full px-5 py-4 rounded-xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-amber-500 outline-none font-black text-slate-900 text-xs shadow-inner appearance-none cursor-pointer pr-12"
                                 >
-                                    <option value={EventStatus.DRAFT}>DRAFT (LOCK)</option>
-                                    <option value={EventStatus.PUBLISHED}>PUBLISHED (INTEL)</option>
-                                    <option value={EventStatus.SCHEDULED}>SCHEDULED (WAIT)</option>
-                                    <option value={EventStatus.ACTIVE}>ACTIVE (LIVE)</option>
-                                    <option value={EventStatus.CANCELLED}>CANCELLED (TERM)</option>
-                                    <option value={EventStatus.COMPLETED}>COMPLETED (ARCH)</option>
+                                    <option value={EventStatus.DRAFT}>DRAFT (HIDDEN)</option>
+                                    <option value={EventStatus.PUBLISHED}>PUBLISHED (LIVE)</option>
+                                    <option value={EventStatus.SCHEDULED}>SCHEDULED</option>
+                                    <option value={EventStatus.ACTIVE}>ACTIVE</option>
+                                    <option value={EventStatus.CANCELLED}>CANCELLED</option>
+                                    <option value={EventStatus.COMPLETED}>COMPLETED</option>
                                 </select>
                                 <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-amber-500 opacity-50">
                                     <ExternalLink size={14} />
@@ -700,15 +700,15 @@ export default function EditEventPage() {
 
             {/* CRITICAL OVERRIDE HUB (DELETE MODAL) */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white rounded-[2rem] shadow-2xl max-w-sm w-full animate-in zoom-in-95 duration-300 overflow-hidden border border-slate-50">
+                <div className="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+                    <div className="bg-white rounded-[2rem] shadow-2xl max-w-sm w-full overflow-hidden border border-slate-50">
                         <div className="p-8 bg-red-50 border-b border-red-100 flex flex-col items-center text-center space-y-5">
                             <div className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center text-red-600 shadow-2xl shadow-red-200/50">
                                 <Trash2 size={40} strokeWidth={2.5} />
                             </div>
                             <div className="space-y-1.5">
-                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight leading-none">Critical Override</h2>
-                                <p className="text-[9px] font-bold text-red-500 uppercase tracking-widest">Permanent Deletion Protocol</p>
+                                <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight leading-none">Delete Event</h2>
+                                <p className="text-[9px] font-bold text-red-500 uppercase tracking-widest">Permanent Action</p>
                             </div>
                         </div>
 
@@ -728,14 +728,14 @@ export default function EditEventPage() {
                                 disabled={saving}
                                 className="flex-1 px-6 py-4 rounded-xl bg-white border-2 border-slate-200 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm active:scale-95"
                             >
-                                Abort
+                                Cancel
                             </button>
                             <button
                                 onClick={handleDelete}
                                 disabled={saving}
                                 className="flex-1 px-6 py-4 rounded-xl bg-red-600 text-white text-[10px] font-black uppercase tracking-widest hover:bg-red-700 transition-all shadow-xl shadow-red-600/30 active:scale-95"
                             >
-                                {saving ? 'Terminating...' : 'Terminate'}
+                                {saving ? 'Deleting...' : 'Delete'}
                             </button>
                         </div>
                     </div>

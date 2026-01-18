@@ -81,7 +81,7 @@ export default function StaffPage() {
     );
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-20 px-4 lg:px-0">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-20 px-4 lg:px-0">
             {/* ATMOSPHERIC PERSONNEL HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-10 text-white shadow-2xl relative overflow-hidden ring-1 ring-white/10 group">
                 {/* Background Patterns */}
@@ -95,18 +95,18 @@ export default function StaffPage() {
                                 <ShieldAlert size={28} className="text-emerald-400" />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Operational security</span>
-                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Personnel Matrix</h1>
+                                <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/80">Staff Management</span>
+                                <h1 className="text-2xl font-black tracking-tight text-white uppercase leading-none">Team Members</h1>
                             </div>
                         </div>
                         <p className="text-emerald-100/60 text-xs font-medium leading-relaxed max-w-lg">
-                            Manage authorized access to your operational environment. Monitor team identity and initialize new personnel credentials.
+                            Manage team access and invitation credentials. Monitor staff activity and roles within your organization.
                         </p>
                     </div>
 
                     <div className="flex items-center gap-3">
                         <div className="bg-white/5 border border-white/10 rounded-2xl px-5 py-3 flex flex-col items-center justify-center backdrop-blur-sm">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500/80 mb-0.5">Active Units</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500/80 mb-0.5">Total Staff</span>
                             <span className="text-2xl font-black text-white">{staff.length}</span>
                         </div>
                         <button
@@ -114,7 +114,7 @@ export default function StaffPage() {
                             className="bg-emerald-500 hover:bg-emerald-600 text-[#022c22] px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/20 transition-all active:scale-95 flex items-center gap-2.5 h-full"
                         >
                             <Plus size={16} strokeWidth={3} />
-                            Invite Personnel
+                            Invite Staff Member
                         </button>
                     </div>
                 </div>
@@ -200,7 +200,7 @@ export default function StaffPage() {
             {/* Access Authorization Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md" onClick={() => !inviting && setIsModalOpen(false)}>
-                    <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden animate-in slide-in-from-bottom-8 duration-500 border border-slate-100" onClick={e => e.stopPropagation()}>
+                    <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden border border-slate-100" onClick={e => e.stopPropagation()}>
                         {/* Modal Header */}
                         <div className="bg-[#022c22] p-6 lg:p-8 text-white relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-1/3 h-full bg-emerald-500/10 skew-x-12 translate-x-1/2"></div>
@@ -219,7 +219,7 @@ export default function StaffPage() {
                         <div className="p-6 lg:p-8 space-y-5">
                             <form onSubmit={handleInvite} className="space-y-4">
                                 {message && (
-                                    <div className={`p-4 rounded-2xl flex items-center gap-3 animate-in fade-in duration-300 ${message?.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
+                                    <div className={`p-4 rounded-2xl flex items-center gap-3 ${message?.type === 'success' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-600 border border-red-100'}`}>
                                         {message?.type === 'success' ? <CheckCircle2 size={18} /> : <ShieldAlert size={18} />}
                                         <p className="text-[11px] font-bold uppercase tracking-tight">{message?.text}</p>
                                     </div>

@@ -112,7 +112,7 @@ export default function TenantAdminDashboard() {
         .slice(0, 5);
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500 pb-12">
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8 pb-12">
 
             {/* COMPACT COMMAND HEADER */}
             <div className="bg-[#022c22] rounded-3xl p-6 lg:p-8 text-white shadow-xl relative overflow-hidden ring-1 ring-white/10">
@@ -124,11 +124,11 @@ export default function TenantAdminDashboard() {
                     </div>
                     <div className="flex-1 text-center md:text-left space-y-1.5">
                         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[9px] font-black uppercase tracking-widest border border-emerald-500/30">
-                            <Activity size={10} strokeWidth={3} /> Real-time Ops
+                            <Activity size={10} strokeWidth={3} /> Live Overview
                         </div>
-                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Tenant Command</h1>
+                        <h1 className="text-2xl font-black tracking-tight leading-none uppercase">Dashboard</h1>
                         <p className="text-emerald-100/60 text-xs font-medium max-w-xl mx-auto md:mx-0">
-                            Managing {stats.totalEvents} events and monitoring platform throughput for your organization.
+                            Managing {stats.totalEvents} events and monitoring platform performance for your organization.
                         </p>
                     </div>
                     <div className="shrink-0 flex items-center gap-3">
@@ -138,7 +138,7 @@ export default function TenantAdminDashboard() {
                             className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-5 py-3 flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
                         >
                             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
-                            <span className="text-[11px] font-black uppercase tracking-widest">{loading ? 'Syncing' : 'Sync Pulse'}</span>
+                            <span className="text-[11px] font-black uppercase tracking-widest">{loading ? 'Loading' : 'Refresh Data'}</span>
                         </button>
                     </div>
                 </div>
@@ -211,7 +211,7 @@ export default function TenantAdminDashboard() {
                             <table className="w-full">
                                 <thead>
                                     <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 bg-slate-50/50">
-                                        <th className="px-8 py-4 text-left">Event Identity</th>
+                                        <th className="px-8 py-4 text-left">Event Name</th>
                                         <th className="px-8 py-4 text-left">Schedule</th>
                                         <th className="px-8 py-4 text-left">State</th>
                                         <th className="px-8 py-4 text-right">Actions</th>
@@ -243,7 +243,7 @@ export default function TenantAdminDashboard() {
                                     ))}
                                     {!loading && upcomingEvents.length === 0 && (
                                         <tr>
-                                            <td colSpan={4} className="px-8 py-10 text-center text-[11px] font-black uppercase text-slate-400 tracking-widest italic">No Upcoming Engagements</td>
+                                            <td colSpan={4} className="px-8 py-10 text-center text-[11px] font-black uppercase text-slate-400 tracking-widest italic">No Upcoming Events</td>
                                         </tr>
                                     )}
                                 </tbody>
@@ -261,7 +261,7 @@ export default function TenantAdminDashboard() {
 
                         <div className="mb-8 relative z-10 flex items-center justify-between">
                             <h3 className="text-xs font-black uppercase tracking-[0.25em] flex items-center gap-2.5 text-emerald-400">
-                                <Activity size={14} strokeWidth={3} /> Recent Throughput
+                                <Activity size={14} strokeWidth={3} /> Recent Activity
                             </h3>
                             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
                         </div>
